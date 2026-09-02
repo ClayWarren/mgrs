@@ -2,7 +2,7 @@ import ctypes
 
 from . import core
 
-__version__ = "1.5.4"
+__version__ = "1.5.4+lasershark.1"
 
 # Additive capability markers for callers that can safely remove their own
 # serialization around native conversion calls.
