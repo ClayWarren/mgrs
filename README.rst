@@ -127,3 +127,18 @@ You can also control the precision of the MGRS grid with the MGRSPrecision
 arguments in .toMGRS().  Other than that, there isn't too much to it.
 
 
+Thread safety
+------------------------------------------------------------------------------
+
+Native projection parameters are stored per operating-system thread.  Calls on
+different threads can therefore overlap without changing one another's active
+MGRS, UTM, UPS, Transverse Mercator, or Polar Stereographic parameters.  The
+module exposes ``THREAD_SAFE`` and ``THREAD_SAFETY_IMPLEMENTATION`` capability
+markers so applications can detect this behavior.
+
+The native ``Set_*_Parameters`` and ``Get_*_Parameters`` C functions now have
+thread-local semantics: a setter changes only the calling thread's parameter
+set, and a getter reads that same thread's parameter set.  Code that selects a
+non-default ellipsoid directly through the C API must call its setter in every
+worker thread that uses it.  Function signatures and single-threaded behavior
+are unchanged.

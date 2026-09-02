@@ -4,6 +4,11 @@ from . import core
 
 __version__ = "1.5.4"
 
+# Additive capability markers for callers that can safely remove their own
+# serialization around native conversion calls.
+THREAD_SAFE = True
+THREAD_SAFETY_IMPLEMENTATION = "native-thread-local-state-v1"
+
 
 class MGRS:
     def __init__(self):

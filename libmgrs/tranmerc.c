@@ -87,6 +87,7 @@
 
 #include <math.h>
 #include "tranmerc.h"
+#include "thread_local.h"
 
 /*
  *    math.h      - Standard C math library
@@ -125,28 +126,28 @@
  */
 
 /* Ellipsoid Parameters, default to WGS 84  */
-static double TranMerc_a = 6378137.0;              /* Semi-major axis of ellipsoid in meters */
-static double TranMerc_f = 1 / 298.257223563;      /* Flattening of ellipsoid  */
-static double TranMerc_es = 0.0066943799901413800; /* Eccentricity (0.08181919084262188000) squared */
-static double TranMerc_ebs = 0.0067394967565869;   /* Second Eccentricity squared */
+static MGRS_THREAD_LOCAL double TranMerc_a = 6378137.0;              /* Semi-major axis of ellipsoid in meters */
+static MGRS_THREAD_LOCAL double TranMerc_f = 1 / 298.257223563;      /* Flattening of ellipsoid  */
+static MGRS_THREAD_LOCAL double TranMerc_es = 0.0066943799901413800; /* Eccentricity (0.08181919084262188000) squared */
+static MGRS_THREAD_LOCAL double TranMerc_ebs = 0.0067394967565869;   /* Second Eccentricity squared */
 
 /* Transverse_Mercator projection Parameters */
-static double TranMerc_Origin_Lat = 0.0;           /* Latitude of origin in radians */
-static double TranMerc_Origin_Long = 0.0;          /* Longitude of origin in radians */
-static double TranMerc_False_Northing = 0.0;       /* False northing in meters */
-static double TranMerc_False_Easting = 0.0;        /* False easting in meters */
-static double TranMerc_Scale_Factor = 1.0;         /* Scale factor  */
+static MGRS_THREAD_LOCAL double TranMerc_Origin_Lat = 0.0;           /* Latitude of origin in radians */
+static MGRS_THREAD_LOCAL double TranMerc_Origin_Long = 0.0;          /* Longitude of origin in radians */
+static MGRS_THREAD_LOCAL double TranMerc_False_Northing = 0.0;       /* False northing in meters */
+static MGRS_THREAD_LOCAL double TranMerc_False_Easting = 0.0;        /* False easting in meters */
+static MGRS_THREAD_LOCAL double TranMerc_Scale_Factor = 1.0;         /* Scale factor  */
 
 /* Isometeric to geodetic latitude parameters, default to WGS 84 */
-static double TranMerc_ap = 6367449.1458008;
-static double TranMerc_bp = 16038.508696861;
-static double TranMerc_cp = 16.832613334334;
-static double TranMerc_dp = 0.021984404273757;
-static double TranMerc_ep = 3.1148371319283e-005;
+static MGRS_THREAD_LOCAL double TranMerc_ap = 6367449.1458008;
+static MGRS_THREAD_LOCAL double TranMerc_bp = 16038.508696861;
+static MGRS_THREAD_LOCAL double TranMerc_cp = 16.832613334334;
+static MGRS_THREAD_LOCAL double TranMerc_dp = 0.021984404273757;
+static MGRS_THREAD_LOCAL double TranMerc_ep = 3.1148371319283e-005;
 
 /* Maximum variance for easting and northing values for WGS 84. */
-static double TranMerc_Delta_Easting = 40000000.0;
-static double TranMerc_Delta_Northing = 40000000.0;
+static MGRS_THREAD_LOCAL double TranMerc_Delta_Easting = 40000000.0;
+static MGRS_THREAD_LOCAL double TranMerc_Delta_Northing = 40000000.0;
 
 /* These state variables are for optimization purposes. The only function
  * that should modify them is Set_Tranverse_Mercator_Parameters.         */

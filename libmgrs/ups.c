@@ -86,6 +86,7 @@
 #include <math.h>
 #include "polarst.h"
 #include "ups.h"
+#include "thread_local.h"
 /*
  *    math.h     - Is needed to call the math functions.
  *    polar.h    - Is used to convert polar stereographic coordinates
@@ -108,12 +109,12 @@
 #define MAX_EAST_NORTH 4000000
 
 /* Ellipsoid Parameters, default to WGS 84  */
-static double UPS_a = 6378137.0;          /* Semi-major axis of ellipsoid in meters   */
-static double UPS_f = 1 / 298.257223563;  /* Flattening of ellipsoid  */
+static MGRS_THREAD_LOCAL double UPS_a = 6378137.0;          /* Semi-major axis of ellipsoid in meters   */
+static MGRS_THREAD_LOCAL double UPS_f = 1 / 298.257223563;  /* Flattening of ellipsoid  */
 const double UPS_False_Easting = 2000000;
 const double UPS_False_Northing = 2000000;
-static double UPS_Origin_Latitude = MAX_ORIGIN_LAT;  /*set default = North Hemisphere */
-static double UPS_Origin_Longitude = 0.0;
+static MGRS_THREAD_LOCAL double UPS_Origin_Latitude = MAX_ORIGIN_LAT;  /*set default = North Hemisphere */
+static MGRS_THREAD_LOCAL double UPS_Origin_Longitude = 0.0;
 
 
 /************************************************************************/

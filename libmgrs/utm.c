@@ -75,6 +75,7 @@
  */
 #include "tranmerc.h"
 #include "utm.h"
+#include "thread_local.h"
 /*
  *    tranmerc.h    - Is used to convert transverse mercator coordinates
  *    utm.h         - Defines the function prototypes for the utm module.
@@ -99,9 +100,9 @@
  *                              GLOBAL DECLARATIONS
  */
 
-static double UTM_a = 6378137.0;         /* Semi-major axis of ellipsoid in meters  */
-static double UTM_f = 1 / 298.257223563; /* Flattening of ellipsoid                 */
-static long   UTM_Override = 0;          /* Zone override flag                      */
+static MGRS_THREAD_LOCAL double UTM_a = 6378137.0;         /* Semi-major axis of ellipsoid in meters  */
+static MGRS_THREAD_LOCAL double UTM_f = 1 / 298.257223563; /* Flattening of ellipsoid                 */
+static MGRS_THREAD_LOCAL long   UTM_Override = 0;          /* Zone override flag                      */
 
 
 /***************************************************************************/

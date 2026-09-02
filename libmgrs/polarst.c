@@ -94,6 +94,7 @@
 
 #include <math.h>
 #include "polarst.h"
+#include "thread_local.h"
 
 /*
  *    math.h     - Standard C math library
@@ -120,25 +121,25 @@
 const double PI_Over_4 = (PI / 4.0);
 
 /* Ellipsoid Parameters, default to WGS 84  */
-static double Polar_a = 6378137.0;                    /* Semi-major axis of ellipsoid in meters  */
-static double Polar_f = 1 / 298.257223563;            /* Flattening of ellipsoid  */
-static double es = 0.08181919084262188000;            /* Eccentricity of ellipsoid    */
-static double es_OVER_2 = .040909595421311;           /* es / 2.0 */
-static double Southern_Hemisphere = 0;                /* Flag variable */
-static double tc = 1.0;
-static double e4 = 1.0033565552493;
-static double Polar_a_mc = 6378137.0;                 /* Polar_a * mc */
-static double two_Polar_a = 12756274.0;               /* 2.0 * Polar_a */
+static MGRS_THREAD_LOCAL double Polar_a = 6378137.0;                    /* Semi-major axis of ellipsoid in meters  */
+static MGRS_THREAD_LOCAL double Polar_f = 1 / 298.257223563;            /* Flattening of ellipsoid  */
+static MGRS_THREAD_LOCAL double es = 0.08181919084262188000;            /* Eccentricity of ellipsoid    */
+static MGRS_THREAD_LOCAL double es_OVER_2 = .040909595421311;           /* es / 2.0 */
+static MGRS_THREAD_LOCAL double Southern_Hemisphere = 0;                /* Flag variable */
+static MGRS_THREAD_LOCAL double tc = 1.0;
+static MGRS_THREAD_LOCAL double e4 = 1.0033565552493;
+static MGRS_THREAD_LOCAL double Polar_a_mc = 6378137.0;                 /* Polar_a * mc */
+static MGRS_THREAD_LOCAL double two_Polar_a = 12756274.0;               /* 2.0 * Polar_a */
 
 /* Polar Stereographic projection Parameters */
-static double Polar_Origin_Lat = ((PI * 90) / 180);   /* Latitude of origin in radians */
-static double Polar_Origin_Long = 0.0;                /* Longitude of origin in radians */
-static double Polar_False_Easting = 0.0;              /* False easting in meters */
-static double Polar_False_Northing = 0.0;             /* False northing in meters */
+static MGRS_THREAD_LOCAL double Polar_Origin_Lat = ((PI * 90) / 180);   /* Latitude of origin in radians */
+static MGRS_THREAD_LOCAL double Polar_Origin_Long = 0.0;                /* Longitude of origin in radians */
+static MGRS_THREAD_LOCAL double Polar_False_Easting = 0.0;              /* False easting in meters */
+static MGRS_THREAD_LOCAL double Polar_False_Northing = 0.0;             /* False northing in meters */
 
 /* Maximum variance for easting and northing values for WGS 84. */
-static double Polar_Delta_Easting = 12713601.0;
-static double Polar_Delta_Northing = 12713601.0;
+static MGRS_THREAD_LOCAL double Polar_Delta_Easting = 12713601.0;
+static MGRS_THREAD_LOCAL double Polar_Delta_Northing = 12713601.0;
 
 /* These state variables are for optimization purposes. The only function
  * that should modify them is Set_Polar_Stereographic_Parameters.         

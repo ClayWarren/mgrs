@@ -84,6 +84,7 @@
 #include "ups.h"
 #include "utm.h"
 #include "mgrs.h"
+#include "thread_local.h"
 
 /*
  *      ctype.h     - Standard C character handling library
@@ -149,9 +150,9 @@
 
 
 /* Ellipsoid parameters, default to WGS 84 */
-double MGRS_a = 6378137.0;    /* Semi-major axis of ellipsoid in meters */
-double MGRS_f = 1 / 298.257223563; /* Flattening of ellipsoid           */
-char   MGRS_Ellipsoid_Code[3] = {'W','E',0};
+MGRS_THREAD_LOCAL double MGRS_a = 6378137.0;    /* Semi-major axis of ellipsoid in meters */
+MGRS_THREAD_LOCAL double MGRS_f = 1 / 298.257223563; /* Flattening of ellipsoid           */
+MGRS_THREAD_LOCAL char   MGRS_Ellipsoid_Code[3] = {'W','E',0};
 
 
 /*
