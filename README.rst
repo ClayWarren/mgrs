@@ -142,3 +142,20 @@ set, and a getter reads that same thread's parameter set.  Code that selects a
 non-default ellipsoid directly through the C API must call its setter in every
 worker thread that uses it.  Function signatures and single-threaded behavior
 are unchanged.
+
+Conversion status
+------------------------------------------------------------------------------
+
+``MGRSToUTMWithStatus`` provides an inverse conversion without emitting Python
+warnings::
+
+    >>> result, status = mgrs.MGRS().MGRSToUTMWithStatus("50TMK5045027900")
+    >>> result
+    (50, 'N', 450450.0, 4427900.0)
+    >>> bool(status & mgrs.MGRS_LAT_WARNING)
+    True
+
+Hard conversion errors still raise ``MGRSError``.  Warning bits are returned
+in ``status`` so concurrent applications do not need to alter process-global
+``warnings`` filters.  The existing ``MGRSToUTM`` method retains its historical
+warning behavior.

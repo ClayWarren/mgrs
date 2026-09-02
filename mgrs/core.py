@@ -188,6 +188,8 @@ warnings = {
     0x0400: "Latitude Warning",
 }
 
+MGRS_LAT_WARNING = 0x0400
+
 
 def get_errors(value):
     output = []
@@ -330,3 +332,17 @@ rt.Convert_MGRS_To_UTM.argtype = [
 ]
 rt.Convert_MGRS_To_UTM.restype = ctypes.c_long
 rt.Convert_MGRS_To_UTM.errcheck = check_error
+
+# Index access deliberately creates a separate ctypes function object.  This
+# binding has no ``errcheck`` hook, allowing callers to receive warning bits
+# without mutating process-global Python warning filters.  Hard errors are
+# still raised by the public status-returning wrapper.
+raw_Convert_MGRS_To_UTM = rt["Convert_MGRS_To_UTM"]
+raw_Convert_MGRS_To_UTM.argtypes = [
+    ctypes.c_char_p,
+    ctypes.POINTER(ctypes.c_long),
+    ctypes.POINTER(ctypes.c_char),
+    ctypes.POINTER(ctypes.c_double),
+    ctypes.POINTER(ctypes.c_double),
+]
+raw_Convert_MGRS_To_UTM.restype = ctypes.c_long

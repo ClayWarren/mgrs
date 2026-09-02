@@ -8,6 +8,7 @@ __version__ = "1.5.4"
 # serialization around native conversion calls.
 THREAD_SAFE = True
 THREAD_SAFETY_IMPLEMENTATION = "native-thread-local-state-v1"
+MGRS_LAT_WARNING = core.MGRS_LAT_WARNING
 
 
 class MGRS:
@@ -134,6 +135,43 @@ class MGRS:
             hemisphere.contents.value.decode("utf-8"),
             easting.contents.value,
             northing.contents.value,
+        )
+
+    def MGRSToUTMWithStatus(self, MGRS, encoding="utf-8"):
+        """Convert MGRS to UTM and return warning status separately.
+
+        The result is ``((zone, hemisphere, easting, northing), status)``.
+        Native error bits still raise :class:`MGRSError`, while warning bits
+        such as :data:`MGRS_LAT_WARNING` are returned without emitting a
+        process-global Python warning.
+        """
+        if type(MGRS) is str:
+            mgrs = MGRS.encode(encoding)
+        else:
+            mgrs = MGRS
+
+        mgrs = ctypes.string_at(mgrs)
+        zone = ctypes.pointer(ctypes.c_long())
+        hemisphere = ctypes.pointer(ctypes.c_char())
+        easting = ctypes.pointer(ctypes.c_double())
+        northing = ctypes.pointer(ctypes.c_double())
+        cargs = (mgrs, zone, hemisphere, easting, northing)
+
+        status = core.raw_Convert_MGRS_To_UTM(*cargs)
+        error_message = core.get_errors(status)
+        if error_message:
+            raise core.MGRSError(
+                'Error in "Convert_MGRS_To_UTM": {}'.format(error_message)
+            )
+
+        return (
+            (
+                zone.contents.value,
+                hemisphere.contents.value.decode("utf-8"),
+                easting.contents.value,
+                northing.contents.value,
+            ),
+            status,
         )
 
     def UTMToMGRS(self, zone, hemisphere, easting, northing, MGRSPrecision=5):
